@@ -8,7 +8,6 @@ from csv_import import *
 def main():
 	database = r"pilppa_kicad_lib_db.sqlite"
 	
-	print('argument list', sys.argv)
 	csv_fname = sys.argv[1]
 	print("csv file: {}".format(csv_fname))
 	

@@ -119,8 +119,9 @@ def parse_component_value_mouser(enum_cmp_type, db__desc):
 			ret = "irda"
 		elif ("white" in db_desc_low):
 			ret = "white"
-	elif (res and res.group(0) is not None):
+	# check if regexp found matching value and store it to string
+	if (res and res.group(0) is not None):
 		ret = res.group(0)
 		ret = ret.removesuffix('ohms')
-		print(ret)
+		#print(ret)
 	return ret
