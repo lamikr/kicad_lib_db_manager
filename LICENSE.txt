@@ -1,0 +1,3 @@
+Copyright (c) 2024 by Mika Laitio <lamikr@gmail.com>
+
+kicad_lib_db_manager is licensed with LGPL 2.1 license

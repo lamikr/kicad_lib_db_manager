@@ -1,0 +1,2 @@
+Index, DigiKey Part #, Manufacturer Part Number, Description               , Customer Reference, Quantity, Backorder, Unit Price, Extended Price
+5,     490-13247-1-ND, GRM188R60J476ME15D,       CAP CER 47UF 6.3V X5R 0603,                   , 10      , 0,         $0.30300  , $3.03

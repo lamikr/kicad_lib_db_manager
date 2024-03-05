@@ -25,6 +25,7 @@ def create_table(conn, create_table_sql):
     try:
         c = conn.cursor()
         c.execute(create_table_sql)
+        conn.commit();
     except Error as e:
         print(e)
 
@@ -49,19 +50,19 @@ def kicad_lib_db_init(conn):
     );"""
 	'''
 	sql_create_components_table = """ CREATE TABLE IF NOT EXISTS components (
-                                        mpn TEXT PRIMARY KEY,
+										id INTEGER PRIMARY KEY ,
+                                        mpn TEXT UNIQUE,
                                         type TEXT,
-                                        manufacturer TEXT,
-                                        symbols TEXT,
-                                        Value_title TEXT,
+                                        value_type TEXT,
                                         value TEXT,
                                         description TEXT,
+                                        manufacturer TEXT,
+                                        symbols TEXT,
                                         footprints TEXT,
                                         quantity INTEGER DEFAULT 0,
                                         last_update_date TEXT,
                                         verified INTEGER DEFAULT 0,
-                                        Cost numeric,
-                                        Mass double
+                                        price numeric
                                     ); """	
 	# create tables
 	if conn is not None:
@@ -70,10 +71,10 @@ def kicad_lib_db_init(conn):
 	else:
 		print("Error! cannot create the database connection.")
 
-def kicad_lib_db_add_data(conn, mpn, cmp_type, cmp_symbols, value_title, value, footprints, quantity):
-	sql = ''' INSERT INTO components(mpn, type, symbols, value_title, value, footprints, quantity)
-              VALUES(?,?,?,?,?,?,?) on CONFLICT(MPN) DO UPDATE SET type=excluded.type, symbols=excluded.symbols, value_title=excluded.value_title, value=excluded.value, footprints=excluded.footprints, quantity=excluded.quantity WHERE true'''
-	conn.execute(sql, (mpn, cmp_type, cmp_symbols, value_title, value, footprints, quantity))
+def kicad_lib_db_add_data(conn, mpn, cmp_type, cmp_symbols, value_type, value, description, footprint_list, quantity):
+	sql = ''' INSERT INTO components(mpn, type, symbols, value_type, value, description, footprints, quantity)
+              VALUES(?,?,?,?,?,?,?,?) on CONFLICT(MPN) DO UPDATE SET type=excluded.type, symbols=excluded.symbols, value_type=excluded.value_type, value=excluded.value, description=excluded.description, footprints=excluded.footprints, quantity=excluded.quantity WHERE true'''
+	conn.execute(sql, (mpn, cmp_type, cmp_symbols, value_type, value, description, footprint_list, quantity))
 	#sql = ''' INSERT INTO components(mpn) values("1")'''
 	#conn.execute(sql)
 	conn.commit()
