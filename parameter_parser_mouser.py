@@ -80,6 +80,10 @@ def parse_component_description_mouser(row):
 	key_str = get_mouser_header_by_index(ENUM_MOUSER_HEADER1_INDEX.DESCRIPTION.value)
 	return row[key_str]
 	
+def parse_component_unit_price_mouser(row):
+	key_str = get_mouser_header_by_index(ENUM_MOUSER_HEADER1_INDEX.PRICE_USD.value)
+	return row[key_str]
+	
 def parse_component_type_enum_mouser(db__desc):
 	ret = ENUM_COMPONENT_TYPE.UNKNOWN
 	desc_lwrc = db__desc.lower()

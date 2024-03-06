@@ -54,19 +54,16 @@ def is_csv_header_digikey(hdr_row):
 	return False
 	
 def parse_component_mpn_digikey(row):
-	print(row)
-	key_str=get_digikey_header_by_index(ENUM_DIGIKEY_HEADER1_INDEX.MANUF_PART_NUMBER.value)
+	key_str = get_digikey_header_by_index(ENUM_DIGIKEY_HEADER1_INDEX.MANUF_PART_NUMBER.value)
 	return row[key_str]
 	
 def parse_component_order_qty_digikey(row):
 	qty_txt	= ''
 	try:
-		key_str=get_digikey_header_by_index(ENUM_DIGIKEY_HEADER1_INDEX.ORDER_QTY.value)
+		key_str = get_digikey_header_by_index(ENUM_DIGIKEY_HEADER1_INDEX.ORDER_QTY.value)
 		qty_txt = row[key_str]
 		return int(qty_txt)
 	except ValueError:
-		print("ERROR")
-		print("ERROR")
 		print("ERROR")
 		print(qty_txt);
 		print(row);
@@ -74,6 +71,11 @@ def parse_component_order_qty_digikey(row):
 
 def parse_component_description_digikey(row):	
 	key_str = get_digikey_header_by_index(ENUM_DIGIKEY_HEADER1_INDEX.DESCRIPTION.value)
+	return row[key_str]
+	
+def parse_component_unit_price_digikey(row):
+	key_str = get_digikey_header_by_index(ENUM_DIGIKEY_HEADER1_INDEX.PRICE_USD.value)
+	print(row)
 	return row[key_str]
 	
 def parse_component_type_enum_digikey(db__desc):
