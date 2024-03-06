@@ -17,27 +17,28 @@ def create_connection(db_file):
     conn = None
     try:
         conn = sqlite3.connect(db_file)
-        return conn
     except Error as e:
         print(e)
     return conn
 
-
 def create_table(conn, create_table_sql):
-    """ create a table from the create_table_sql statement
-    :param conn: Connection object
-    :param create_table_sql: a CREATE TABLE statement
-    :return:
-    """
-    try:
-        c = conn.cursor()
-        c.execute(create_table_sql)
-        conn.commit();
-    except Error as e:
-        print(e)
-
+	""" create a table from the create_table_sql statement
+	:param conn: Connection object
+	:param create_table_sql: a CREATE TABLE statement
+	:return:
+	"""
+	ret = True
+	try:
+		c = conn.cursor()
+		c.execute(create_table_sql)
+		conn.commit();
+	except Error as e:
+		ret = False
+		print(e)
+	return ret;
 
 def kicad_lib_db_init(conn):
+	ret = True
 	sql_create_components_table = """ CREATE TABLE IF NOT EXISTS components (
 										id INTEGER PRIMARY KEY ,
                                         mpn TEXT UNIQUE,
@@ -56,10 +57,11 @@ def kicad_lib_db_init(conn):
 	# create tables
 	if conn is not None:
 		# create projects table
-		create_table(conn, sql_create_components_table)
+		ret = create_table(conn, sql_create_components_table)
 	else:
+		ret	= False;
 		print("Error! cannot create the database connection.")
-	print("TABLE DONE")
+	return ret;
 
 def kicad_lib_db_add_data(conn,
 						mpn,

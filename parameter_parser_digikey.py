@@ -64,7 +64,6 @@ def parse_component_order_qty_digikey(row):
 		qty_txt = row[key_str]
 		return int(qty_txt)
 	except ValueError:
-		print("ERROR")
 		print(qty_txt);
 		print(row);
 		return 0
