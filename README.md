@@ -1,14 +1,16 @@
-Purpose of this tool/scripts is to help managing the list of own pcb components.
+**Pilppa Kicad Lib DB Manager**
 
-When components are ordered from warehouses like digikey or mouser, customer can download the list of ordered components
-as a CSV or excel file. This tool will parse those CSV files and import the data to sqlite database.
+Python tool for integrating the list of pcb components bought from PCB warehouses like Digikey and Mouser to Kicad via DBLib driver that allows viewing them as a schematic symbols and pcb footprints.
 
-This is very initial proof of concept version that can parse digikey and mouser csv files and create
-kicad database library. Project contains sample CSV files that can be used for testing the database cceation.
+This tool will work by parsing the CSV file of components that are ordered from warehouses like digikey or mouser. From digikey that file can be downloaed directly, while in mouser case you can download the excel file and then export that to CSV file with libraoffice or microsoft excel.
 
-Kicad 8 can be configured to use the components listed in the created sqlite database file.
+Data from imported CSV files are stored to sqlite3 database that can be then integrated to Kicad 8 library database.
 
-Usage:
+This tool contains also the required pilppa_kicad_lib_db.kicad_dbl kicad configuration file which contains mapping instruction from database to sql.
+
+**Usage Example:**
+
+Following script will show how to import one digikey csv file and one mouser csv file to database and then integrate that to kicad 8.
 
 1. csv file import to new sqlite database:
    
@@ -22,22 +24,42 @@ Usage:
 
 >	sqlite> select * from components;
 	
-	1|HPH2-B-10-UA||||CONN HEADER VERT 10POS 1.27MM||||10||0|
-	2|HPH2-B-08-UA||||CONN HEADER VERT 8POS 1.27MM||||20||0|
-	3|LTST-C171GKT|LED|Color|green|LED GREEN CLEAR CHIP SMD||Device:LED||100||0|
-	4|MLZ2012M220WTD25|Inductor|${Inductance}||FIXED IND 22UH 220MA 2 OHM SMD||Device:L||50||0|
-	5|GRM188R60J476ME15D|Capacitor|${Capacitance}|47UF|CAP CER 47UF 6.3V X5R 0603||Device:C|Capacitor_SMD:C_0603_1608Metric|10||0|
-	6|CF14JT1M80|Resistor|${Resistance}|1.8M|RES 1.8M OHM 5% 1/4W AXIAL||Device:R||25||0|
-	7|LD39100PU33R||||IC REG LINEAR 3.3V 1A 6DFN||||5||0|	
-	8|||||||||0||0|
-	9|0402YC102K4T4A|Capacitor|${Capacitance}||Multilayer Ceramic Capacitors MLCC - SMD/SMT Multilayer Ceramic Capacitors MLCC - SMD/SMT NEW GLOBAL PN KAM05AR71C102KN 16V 1000pF X7R 0402 10% AEC-Q200||Device:C|Capacitor_SMD:C_0402_1005Metric|100||0|
-	10|CRCW04021K50JNED|Resistor|${Resistance}||Thick Film Resistors - SMD Thick Film Resistors - SMD 1/16watt 1.5Kohms 5%||Device:R||100||0|
-	11|CRCW0402100KFKED|Resistor|${Resistance}||Thick Film Resistors - SMD Thick Film Resistors - SMD 1/16watt 100Kohms 1%||Device:R||100||0|
-	12|LD39100PU18RY||||LDO Voltage Regulators LDO Voltage Regulators 1 A low quiescent current low noise volt regulator||||12||0|
-	13|B3U-1000P||||Tactile Switches Tactile Switches Top Actuated w/o boss w/o ground||||10||0|
-	14|TSW-102-08-F-S||||Headers & Wire Housings Headers & Wire Housings Classic PCB Header Strips, 0.100" pitch||||40||0|
-	15|PESD5Z3.3,115|Diode|Voltage||ESD Suppressors / TVS Diodes ESD Suppressors / TVS Diodes PESD5Z3.3/SOD523/SC-79||Device:D||100||0|
+	will then so rows with following type of data in database table
+	
+> 1|HPH2-B-10-UA||||CONN HEADER VERT 10POS 1.27MM||||10|0.542||0
+...
 
-4. configure kicad 8 to use the library db
+4. Install SQLITE odbc driver for your operating system. For ubuntu use command:
+
+> sudo apt-get install libsqliteodbc unixodbc
+
+
+5. Create new kicad project kicad8_test
+
+6. Copy sqlite database and configuration files under kicad8_test project
+
+> - cp pilppa_kicad_lib_db.kicad_dbl <path to kicad project>
+> - cp pilppa_kicad_lib_db.sqlite <path to kicad project>
+
+
+7. Open kicad project and configure driver
+
+> - Select Kicad Menu/Preferences/Configure Symbol Libraries
+> - Press + button
+> - Set name to "Pilppa"
+> - Set Library Format to Database
+> - Press browse button and select pilppa_kicad_lib_db.kicad_dbl
+> - Press ok to close the Symbol libraries dialog
+> 
+8. Test The component selection from the db library
+
+> - Open schematics with Kicad
+> - Press A button
+> - List of components will be showed
+> - Write 0402YC1 and component will be found from "Components/Pilppa category"
+> 
+
+**Additional Information**
+configure kicad 8 to use the library db
 
 https://www.youtube.com/watch?v=nZqoay-Yevk
