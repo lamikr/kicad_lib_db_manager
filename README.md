@@ -1,6 +1,7 @@
 **Pilppa Kicad Lib DB Manager**
 
-Python tool for integrating the list of pcb components bought from PCB warehouses like Digikey and Mouser to Kicad via DBLib driver that allows viewing them as a schematic symbols and pcb footprints.
+
+Python tool for integrating the list of pcb components bought from PCB warehouses like Digikey and Mouser to Kicad.
 
 This tool will work by parsing the CSV file of components that are ordered from warehouses like digikey or mouser. From digikey that file can be downloaed directly, while in mouser case you can download the excel file and then export that to CSV file with libraoffice or microsoft excel.
 
@@ -8,9 +9,17 @@ Data from imported CSV files are stored to sqlite3 database that can be then int
 
 This tool contains also the required pilppa_kicad_lib_db.kicad_dbl kicad configuration file which contains mapping instruction from database to sql.
 
-**Usage Example:**
+![](docs/pics/pilppa_kicad_lib_db_integration_25pct.png)
 
-Following script will show how to import one digikey csv file and one mouser csv file to database and then integrate that to kicad 8.
+**Usage:**
+
+Following command will read csv file and append it content to sqlite database file pilppa_kicad_lib_db.sqlite. If database or Components table inside it does not exist, the tool will also create those automatically.
+
+> python ./pilppa_kicad_lib_db_manager.py -f component_orders/digikey/digikey_2024_03_01.csv
+
+**Usage Example With Kicad:**
+
+Following script will show how to import one digikey csv file and one mouser csv file to database and then integrate and use that from kicad 8.
 
 1. csv file import to new sqlite database:
    
@@ -60,6 +69,7 @@ Following script will show how to import one digikey csv file and one mouser csv
 > 
 
 **Additional Information**
-configure kicad 8 to use the library db
+
+Configuring kicad 8 to use the library db
 
 https://www.youtube.com/watch?v=nZqoay-Yevk
