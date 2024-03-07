@@ -23,14 +23,20 @@
             "fields": [
                 {
                     "column": "CMP_Type",
-                    "name": "Value",
-                    "visible_on_add": true,
+                    "name": "CMP_Type",
+                    "visible_on_add": false,
                     "visible_in_chooser": true
                 },
                 {
                     "column": "Value",
                     "name": "Value",
                     "visible_on_add": true,
+                    "visible_in_chooser": true
+                },
+                {
+                    "column": "Quantity",
+                    "name": "Quantity",
+                    "visible_on_add": false,
                     "visible_in_chooser": true
                 },
                 {
