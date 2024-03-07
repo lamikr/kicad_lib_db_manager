@@ -39,7 +39,7 @@ def parse_component_mpn(warehouse, row):
 # in succeess cases returns numeric value
 # in case of missing information or parsing error returns
 # None which turns into a empty field in database
-def parse_component_unit_price(warehouse, row):
+def parse_component_unit_price_as_number(warehouse, row):
 	res_txt = None
 	if (warehouse == ENUM_COMPONENT_WAREHOUSE.DIGIKEY):
 		res_txt = parse_component_unit_price_digikey(row)
@@ -51,6 +51,14 @@ def parse_component_unit_price(warehouse, row):
 		ret = parseNumber(res_txt)
 	except:
 		ret	= None;
+	return ret;
+	
+def parse_component_unit_price_as_text(warehouse, row):
+	ret = None
+	if (warehouse == ENUM_COMPONENT_WAREHOUSE.DIGIKEY):
+		ret = parse_component_unit_price_digikey(row)
+	elif (warehouse == ENUM_COMPONENT_WAREHOUSE.MOUSER):
+		ret = parse_component_unit_price_mouser(row)
 	return ret;
 
 def csv_import(warehouse, csv_file, db__conn):
@@ -79,8 +87,8 @@ def csv_import(warehouse, csv_file, db__conn):
 					db__desc = parse_component_description_mouser(row)
 					enum_cmp_type = parse_component_type_enum_mouser(db__desc)
 					db__val = parse_component_value_mouser(enum_cmp_type, db__desc)
-				
-				db__unit_price = parse_component_unit_price(warehouse, row)
+				# would be nice to have this as numeric value but kicad8 shows 0.37 for example as 0
+				db__unit_price = parse_component_unit_price_as_text(warehouse, row)
 				# component type specific values
 				if enum_cmp_type == ENUM_COMPONENT_TYPE.CAPACITOR:
 					db__cmp_type='Capacitor'

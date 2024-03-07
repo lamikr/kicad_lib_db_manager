@@ -50,7 +50,7 @@ def kicad_lib_db_init(conn):
                                         "Symbols" TEXT,
                                         "Footprints" TEXT,
                                         "Quantity" INTEGER DEFAULT 0,
-										"Unit_Price" numeric DEFAULT 0,
+										"Unit_Price" TEXT,
                                         "Update_Date" TEXT,
                                         "Verified_Date" INTEGER DEFAULT 0
                                     ); """
@@ -88,8 +88,8 @@ def kicad_lib_db_add_data(conn,
 	sql = ''' UPDATE components SET quantity = quantity + ? WHERE mpn = ?'''
 	conn.execute(sql, (quantity, mpn))
 	
-	# update quantity field separately by adding the quantity to existing quantity
-	sql = ''' UPDATE components SET unit_price = ? WHERE unit_price = 0 and mpn = ?'''
-	conn.execute(sql, (unit_price, mpn))
+	# update numeric price field separately if it is non-zero
+	#sql = ''' UPDATE components SET unit_price = ? WHERE unit_price = 0 and mpn = ?'''
+	#conn.execute(sql, (unit_price, mpn))
 
 	conn.commit()
