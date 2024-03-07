@@ -9,7 +9,7 @@ Data from imported CSV files are stored to sqlite3 database that can be then int
 
 This tool contains also the required pilppa_kicad_lib_db.kicad_dbl kicad configuration file which contains mapping instruction from database to sql.
 
-![](docs/pics/pilppa_kicad_lib_db_integration_25pct.png)
+![](docs/pics/pilppa_kicad_lib_db_integration_40pct.png)
 
 **Usage:**
 
