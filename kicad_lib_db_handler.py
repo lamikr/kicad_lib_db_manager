@@ -39,21 +39,22 @@ def create_table(conn, create_table_sql):
 
 def kicad_lib_db_init(conn):
 	ret = True
-	sql_create_components_table = """ CREATE TABLE IF NOT EXISTS components (
-										id INTEGER PRIMARY KEY ,
-                                        mpn TEXT UNIQUE,
-                                        type TEXT,
-                                        value_type TEXT,
-                                        value TEXT,
-                                        description TEXT,
-                                        manufacturer TEXT,
-                                        symbols TEXT,
-                                        footprints TEXT,
-                                        quantity INTEGER DEFAULT 0,
-										unit_price numeric DEFAULT 0,
-                                        last_update_date TEXT,
-                                        verified INTEGER DEFAULT 0
-                                    ); """	
+	sql_create_components_table = """ CREATE TABLE IF NOT EXISTS "Components" (
+										"ID" INTEGER PRIMARY KEY ,
+                                        "MPN" TEXT UNIQUE,
+                                        "CMP_Type" TEXT,
+                                        "Value_Type" TEXT,
+                                        "Value" TEXT,
+                                        "Description" TEXT,
+                                        "Manufacturer" TEXT,
+                                        "Symbols" TEXT,
+                                        "Footprints" TEXT,
+                                        "Quantity" INTEGER DEFAULT 0,
+										"Unit_Price" numeric DEFAULT 0,
+                                        "Update_Date" TEXT,
+                                        "Verified_Date" INTEGER DEFAULT 0
+                                    ); """
+                                    
 	# create tables
 	if conn is not None:
 		# create projects table
@@ -79,8 +80,8 @@ def kicad_lib_db_add_data(conn,
 	conn.execute(sql, (mpn, mpn))
 	
 	# then start updating the values from other fields only in case they are NULL and new value is not null
-	# this prevent us overwriting values that user may have modified by using some other tool
-	sql = ''' UPDATE components SET type = COALESCE(dt2.type, ?), value_type = COALESCE(dt2.value_type, ?), value = COALESCE(dt2.value, ?), description = COALESCE(dt2.description, ?), manufacturer = COALESCE(dt2.manufacturer, ?), symbols = COALESCE(dt2.symbols, ?), footprints = COALESCE(dt2.footprints, ?), unit_price = COALESCE(dt2.unit_price, ?) FROM components dt2 WHERE components.mpn = ? AND dt2.mpn = ?'''
+	# this prevent us overwriting values that user may have modified by using some other tool	
+	sql = ''' UPDATE components SET CMP_Type = COALESCE(dt2.CMP_Type, ?), Value_Type = COALESCE(dt2.Value_Type, ?), Value = COALESCE(dt2.Value, ?), Description = COALESCE(dt2.Description, ?), Manufacturer = COALESCE(dt2.Manufacturer, ?), Symbols = COALESCE(dt2.Symbols, ?), Footprints = COALESCE(dt2.Footprints, ?), Unit_Price = COALESCE(dt2.Unit_Price, ?) FROM Components dt2 WHERE Components.MPN = ? AND dt2.MPN = ?'''
 	conn.execute(sql, (cmp_type, value_type, value, description, manufacturer, cmp_symbols, footprint_list, unit_price, mpn, mpn))
 	
 	# update quantity field separately by adding the quantity to existing quantity
